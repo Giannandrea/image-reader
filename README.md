@@ -17,9 +17,9 @@ The key point of this application is the ability to use multiple trasnlator and 
 - Watson translator (https://www.ibm.com/watson/services/language-translator/
 
 ## Usage
-    ruby read.rb <image> <source language> <destination language>
+    ruby bin/run.rb <image> <source language> <destination language>
     # example
-    ruby read.rb example.jpeg nl en
+    ruby bin/run.rb example.jpg nl en
 
 ## Supported Languages
 - Arabic => "ar"
