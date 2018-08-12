@@ -7,6 +7,8 @@ group :production do
   gem 'watson-language-translator'
   gem 'rest-client'
   gem 'wtf_lang'
+  gem 'json'
+  gem 'colorize'
 end
 
 group :test do
