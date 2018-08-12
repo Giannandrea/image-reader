@@ -1,0 +1,25 @@
+{
+    "multi-translator":
+    {
+        "yandex":
+        {
+            "api_key":"",
+            "default_lang":"eng"
+        },
+        "watson":{
+            "language_translator_username":"",
+            "langauge_translator_password":""
+        },
+        "wtf_lang":{
+            "wtf_lang_key":""
+        }
+    },
+    "multi-converter":
+    {
+        "ocr.space":
+        {
+            "ocr_api_key":"",
+            "ocr_api_url":"https://api.ocr.space/parse/image"
+        }
+    }
+}
