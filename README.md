@@ -14,7 +14,6 @@ The key point of this application is the ability to use multiple trasnlator and 
 
 ## Usage
 
-    var resolv = require('get-public-ip');
     ruby read.rb <image> <source language> <destination language>
     # example
     ruby read.rb example.jpeg nl en
