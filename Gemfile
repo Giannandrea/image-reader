@@ -9,6 +9,8 @@ group :production do
   gem 'wtf_lang'
   gem 'json'
   gem 'colorize'
+  gem 'angelo'
+  gem 'openssl'
 end
 
 group :test do
