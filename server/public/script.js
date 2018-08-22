@@ -28,7 +28,6 @@ function bytesToSize(bytes) {
 function fileSelected() {
 
     // hide different warnings
-    document.getElementById('open_modal').style.display = 'none';
     document.getElementById('error').style.display = 'none';
     document.getElementById('error2').style.display = 'none';
     document.getElementById('abort').style.display = 'none';
@@ -74,6 +73,8 @@ function fileSelected() {
 
     // read selected file as DataURL
     oReader.readAsDataURL(oFile);
+
+    checkform();
 }
 
 function startUploading() {
@@ -153,7 +154,8 @@ function uploadProgress(e) { // upload process in progress
 
 function uploadFinish(e) { // upload successfully finished
     var oUploadResponse = document.getElementById('upload_response');
-    oUploadResponse.innerHTML = decodeURIComponent(e.target.responseText).replace(/\n/g, "<br />");
+    var ocr_text = decodeURIComponent(e.target.responseText).replace(/\n/g, "<br />");
+    oUploadResponse.innerHTML = ocr_text;
     oUploadResponse.style.display = 'block';
     var convertion_title = document.getElementById('convertion_response');
     convertion_title.style.display = 'block';
@@ -164,6 +166,7 @@ function uploadFinish(e) { // upload successfully finished
     document.getElementById('filesize').innerHTML = sResultFileSize;
     document.getElementById('remaining').innerHTML = '| 00:00:00';
     clearInterval(oTimer);
+    startTranslation(ocr_text);
 }
 
 function uploadError(e) { // upload error
@@ -174,4 +177,50 @@ function uploadError(e) { // upload error
 function uploadAbort(e) { // upload abort
     document.getElementById('abort').style.display = 'block';
     clearInterval(oTimer);
+}
+
+function startTranslation(ocr_text) {
+    var uForm = document.forms['upload_form'];
+    var slang = uForm.elements["s_lang"].value;
+    var dlang = uForm.elements["d_lang"].value;
+
+    var data = new FormData();
+    data.append('s_lang', slang);
+    data.append('d_lang', dlang);
+    data.append('ocr_text', encodeURIComponent(ocr_text));
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'translation');
+    xhr.addEventListener('load', translationFinish, false);
+    xhr.addEventListener('error', uploadError, false);
+    xhr.addEventListener('abort', uploadAbort, false);
+    xhr.send(data);
+
+    // set inner timer
+    oTimer = setInterval(doInnerUpdates, 300);
+}
+
+function translationFinish(e) { // upload successfully finished
+    var oUploadResponse = document.getElementById('translation_upload');
+    oUploadResponse.innerHTML = decodeURIComponent(e.target.responseText).replace(/\n/g, "<br />");
+    oUploadResponse.style.display = 'block';
+    var convertion_title = document.getElementById('translation_response');
+    convertion_title.style.display = 'block';
+    convertion_title.innerHTML = "<h1 id='translated_title_div'>Translated text result</h1>"
+}
+
+function checkform()
+{
+    console.log("checkform()");
+    var f = document.forms["upload_form"].elements;
+    var cansubmit = true;
+    for (var i = 0; i < f.length; i++) {
+        if (f[i].value.length == 0) cansubmit = false;
+    }
+    if (cansubmit) {
+        document.getElementById('submit_button').disabled = false;
+    }
+    else {
+        document.getElementById('submit_button').disabled = 'disabled';
+    }
 }

@@ -1,22 +1,22 @@
 <html lang="en" >
     <head>
         <meta charset="utf-8" />
-        <title>Pure HTML5 file upload | Script Tutorials</title>
+        <title>Image OCR converter</title>
           <link rel="stylesheet" href="mystyle.css">
         <script src="script.js"></script>
     </head>
 <body>
         <header>
-            <h2>Pure HTML5 file upload</h2>
+            <h2>Image OCR converter</h2>
         </header>
         <div class="container">
-            <div class="contr"><h2>You can select the file (image) and click Upload button</h2></div>
+            <div class="contr"><h3>You can select a image file and click process button</h2></div>
 
             <div class="upload_form_cont">
                 <form id="upload_form" enctype="multipart/form-data" method="post" action="convert_image">
                     <div>
                         <div><label for="file">Please select image file</label></div>
-                        <div class="file"><input type="file" name="file" id="file" onchange="fileSelected();" /></div>
+                        <div class="file"><input type="file" name="file" id="file" onchange="fileSelected();"/></div>
                         <div class="language" ><label for="language">Please select source language</label></div>
                         <div><select name="s_lang">
                             <option value="en"> Default language (en) </option>
@@ -69,7 +69,7 @@
                         </select></div>
                     </div>
                     <div>
-                        <input type="button" value="Upload" onclick="startUploading()" />
+                        <input id="submit_button" type="button" value="Process" onclick="startUploading()" disabled="disabled" />
                     </div>
                     <div id="fileinfo">
                         <div id="filename"></div>
@@ -94,6 +94,8 @@
                         </div>
                         <div id="convertion_response"></div>
                         <div id="upload_response"></div> 
+                        <div id="translation_response"></div>
+                        <div id="translation_upload"></div> 
                     </div>
                 </form>
                 <img id="preview" />

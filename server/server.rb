@@ -29,14 +29,19 @@ class ServerReader < Sinatra::Base
         body "#{URI::encode(text)}"
       end
       
-      get '/not_found' do
-        raise RequestError.new 'not found', 404
+      post '/translation' do
+        s_lang = params[:s_lang]
+        d_lang = params[:d_lang]
+        ocr_text = URI::decode(params[:ocr_text])
+        reader = ImageReader::Reader.new
+        text = reader.translate_text ocr_text, s_lang, d_lang
+        unless text
+          halt 404, "error translating text" 
+          raise RequestError.new 'not found'
+        end
+        status 200
+        headers "Allow"   => "BREW, POST, GET, PROPFIND, WHEN"
+        body "#{URI::encode(text)}"
       end
-      
-      get '/halt' do
-        halt 200, "everything's fine"
-        raise RequestError.new "won't get here"
-      end
-
 end
 ServerReader.run! :host => 'localhost', :port => 3000, :server => 'thin'
