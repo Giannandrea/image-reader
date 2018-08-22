@@ -4,13 +4,16 @@ group :production do
   gem 'httmultiparty'
   gem 'google_spellcheck'
   gem 'ps_yandex_translator'
-  gem 'watson-language-translator'
+  gem 'ibm_watson'
   gem 'rest-client'
   gem 'wtf_lang'
   gem 'json'
   gem 'colorize'
-  gem 'angelo'
-  gem 'openssl'
+  gem 'thin'
+  gem 'sinatra'
+  gem 'rtesseract' #require apt install tesseract-ocr-all
+  gem 'mini_magick' #require apt install imagemagick libmagickwand-dev
+  gem 'pragmatic_segmenter'
 end
 
 group :test do

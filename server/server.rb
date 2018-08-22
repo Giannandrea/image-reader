@@ -1,44 +1,32 @@
 
-#!/usr/bin/env ruby
-$:.unshift File.expand_path '../../../lib', __FILE__
-
-require 'angelo'
-require 'openssl'
-
-
+#!/usr/bin/env ruby -I ../lib -I lib
+# coding: utf-8
+require 'sinatra'
+require 'uri'
 paths = File.expand_path(File.dirname(__FILE__)).split("/")
 base_dir = paths.reverse.drop(1).reverse
 reader_path = base_dir.join("/") + "/reader.rb"
 require reader_path
-
-class ServerReader < Angelo::Base
-    HEART = '<3'
-    CORS = { 'Access-Control-Allow-Origin' => '*',
-             'Access-Control-Allow-Methods' => 'GET, POST'}
-  
-    addr '0.0.0.0'
-    port 3000
-    ping_time 3
-    report_errors!
-    log_level Logger::INFO
-  
-    @@hearting = false
-    @@beating = false
-
-    views_dir 'views/'
-
+#        body "#{URI::encode(text)}"
+class ServerReader < Sinatra::Base
     get '/' do
         erb :form
     end
       
      post '/convert_image' do
-        #raise RequestError.new '"source lang" and "destination lang" is a required parameter' if !params[:s_lang] or !params[:s_lang]
-        puts "post ok"
-        @filename = params[:file][:filename]
+        filename = params[:file][:filename]
         file = params[:file][:tempfile]
-        f = File.open("/tmp/tmp_imge.pdf","wb")
-        f.write(file)
-        halt 200, "everything's fine s_lang: #{params[:s_lang]}, d_lang: #{params[:d_lang]}"
+        filepath = "/tmp/#{filename}"
+        File.open(filepath, 'wb') do |f|
+          f.write(file.read)
+        end
+        s_lang = params[:s_lang]
+        d_lang = params[:d_lang]
+        reader = ImageReader::Reader.new
+        text = reader.convertImageToText filepath, s_lang
+        status 200
+        headers "Allow"   => "BREW, POST, GET, PROPFIND, WHEN"
+        body "#{URI::encode(text)}"
       end
       
       get '/not_found' do
@@ -51,5 +39,4 @@ class ServerReader < Angelo::Base
       end
 
 end
-
-ServerReader.run!
+ServerReader.run! :host => 'localhost', :port => 3000, :server => 'thin'

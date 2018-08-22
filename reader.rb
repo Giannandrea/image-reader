@@ -2,12 +2,6 @@ require "./lib/multi-translator.rb"
 require "./lib/multi-converter.rb"
 require "json"
 
-LANG_CONVERTER = {"ar" => "ara", "bg" => "bul", "ch" => "chs", "hr" => "hrv", "cs" => "cze",
-                  "da" => "dan", "nl" => "dut", "en" => "eng", "fi" => "fin", "fr" => "fre", "de" => "ger",
-                  "el" => "gre", "hu" => "hun", "ko" => "kor", "it" => "ita", "jp" => "jpn", "no" => "nor",
-                  "pl" => "pol", "pt" => "por", "ru" => "rus", "sl" => "slv", "es" => "spa", "sw" => "swe",
-                  "tr" => "tur"}
-
 module ImageReader
   class Reader
     CONF_FILE = "config.json"

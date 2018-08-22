@@ -1,6 +1,6 @@
 require "ps_yandex_translator"
 #equire "microsoft_translator"
-require "watson-language-translator"
+require "ibm_watson/language_translator_v3"
 require "rest-client"
 require "wtf_lang"
 
@@ -13,8 +13,11 @@ module MultiTranslator
         params.default_lang = mtranslator_config["yandex"]["default_lang"]
       end
 
-      ENV["language_translator_username"] = mtranslator_config["watson"]["language_translator_username"]
-      ENV["langauge_translator_password"] = mtranslator_config["watson"]["langauge_translator_password"]
+      @language_translator = language_translator = IBMWatson::LanguageTranslatorV3.new(
+        version: "2018-05-31",
+        username: mtranslator_config["watson"]["language_translator_username"],
+        password: mtranslator_config["watson"]["langauge_translator_password"]
+      )
       #microsoft_translator = MicrosoftTranslator::Client.new("your_client_id", "your_client_secret")
       return self
     end
@@ -26,9 +29,15 @@ module MultiTranslator
     end
 
     def watsonTranslation(text, s_lang, d_lang)
-      j_result = WatsonLanguage::Translator.new(text, source: s_lang, target: d_lang, http_method: "post")
-      res = j_result.result  # => {"translations"=>[{"translation"=>"Hola"}], "word_count"=>1, "character_count"=>5}
-      res["translations"].first["translation"]
+      model = "#{s_lang}-#{d_lang}"
+      translation = nil
+      mt = @language_translator.translate(text: text, model_id: model).result
+      begin
+        translation = mt["translations"][0]["translation"]
+      rescue
+        translation = nil
+      end
+      return translation
     end
 
     def yandexTranslation(text, s_lang, d_lang)
@@ -39,11 +48,11 @@ module MultiTranslator
 
     def translation(text, s_lang, d_lang)
       ran = Random.rand(2)
-      #if ran == 1
-      res = yandexTranslation(text, s_lang, d_lang)
-      #else
-      #res = watsonTranslation(text, s_lang, d_lang)
-      #end
+      if ran == 1
+        res = watsonTranslation(text, s_lang, d_lang)
+      else
+        res = yandexTranslation(text, s_lang, d_lang)
+      end
       res
     end
   end

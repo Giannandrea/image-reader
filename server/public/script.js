@@ -28,7 +28,7 @@ function bytesToSize(bytes) {
 function fileSelected() {
 
     // hide different warnings
-    document.getElementById('upload_response').style.display = 'none';
+    document.getElementById('open_modal').style.display = 'none';
     document.getElementById('error').style.display = 'none';
     document.getElementById('error2').style.display = 'none';
     document.getElementById('abort').style.display = 'none';
@@ -153,14 +153,16 @@ function uploadProgress(e) { // upload process in progress
 
 function uploadFinish(e) { // upload successfully finished
     var oUploadResponse = document.getElementById('upload_response');
-    oUploadResponse.innerHTML = e.target.responseText;
+    oUploadResponse.innerHTML = decodeURIComponent(e.target.responseText).replace(/\n/g, "<br />");
     oUploadResponse.style.display = 'block';
+    var convertion_title = document.getElementById('convertion_response');
+    convertion_title.style.display = 'block';
+    convertion_title.innerHTML = "<h1 id='converted_title_div'>Image to text result</h1>"
 
     document.getElementById('progress_percent').innerHTML = '100%';
     document.getElementById('progress').style.width = '400px';
     document.getElementById('filesize').innerHTML = sResultFileSize;
     document.getElementById('remaining').innerHTML = '| 00:00:00';
-
     clearInterval(oTimer);
 }
 

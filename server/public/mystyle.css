@@ -115,6 +115,8 @@ input[type=button] {
 }
 #upload_response {
     margin-top: 10px;
+    white-space:normal;
+    word-wrap: break-word;
     padding: 20px;
     overflow: hidden;
     display: none;
@@ -135,4 +137,10 @@ input[type=button] {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbb', endColorstr='#eee');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbb', endColorstr='#eee')";
     background: linear-gradient(#bbb, #eee);
+}
+
+#converted_title_div {
+    margin-top: 15px;
+    margin-bottom: 8px;
+
 }
