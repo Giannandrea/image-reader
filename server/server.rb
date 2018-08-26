@@ -44,4 +44,4 @@ class ServerReader < Sinatra::Base
         body "#{URI::encode(text)}"
       end
 end
-ServerReader.run! :host => 'localhost', :port => 3000, :server => 'thin'
+ServerReader.run! :host => 'localhost', :port => 3000, :server => 'thin', daemonize: true
