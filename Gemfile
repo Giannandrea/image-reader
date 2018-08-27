@@ -15,6 +15,7 @@ group :production do
   gem 'mini_magick', '4.8.0' #require apt install imagemagick libmagickwand-dev
   gem 'pragmatic_segmenter', '0.3.19'
   gem 'bigdecimal'
+  gem 'google_spell_checker'
 end
 
 group :test do
