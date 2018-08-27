@@ -14,6 +14,7 @@ group :production do
   gem 'rtesseract', '2.2.0' #require apt install tesseract-ocr-all
   gem 'mini_magick', '4.8.0' #require apt install imagemagick libmagickwand-dev
   gem 'pragmatic_segmenter', '0.3.19'
+  gem 'bigdecimal'
 end
 
 group :test do
